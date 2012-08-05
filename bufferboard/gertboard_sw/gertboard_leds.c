@@ -45,13 +45,22 @@ extern volatile unsigned *gpio;
 // For novice users: don't worry about the complexity
 // The compiler will optimise out all constant expressions and you
 // will end up with a single constant value in your table.
-#define L0 (1<<17)
-#define L1 (1<<21)
-#define L2 (1<<22)
-#define L3 (1<<23)
-#define L4 (1<< 0)
-#define L5 (1<< 1)
-#define ALLEDS  (L0|L1|L2|L3|L4|L5)
+//#define L0 (1<<17)
+//#define L1 (1<<21)
+//#define L2 (1<<22)
+//#define L3 (1<<23)
+//#define L4 (1<< 0)
+//#define L5 (1<< 1)
+#define L0 (1<< 0)
+#define L1 (1<< 1)
+#define L2 (1<< 4)
+#define L3 (1<<17)
+#define L4 (1<<18)
+#define L5 (1<<21)
+#define L6 (1<<22)
+#define L7 (1<<23)
+
+#define ALLEDS  (L0|L1|L2|L3|L4|L5|L6|L7)
 
 //
 //  GPIO
@@ -75,21 +84,13 @@ extern volatile unsigned *gpio;
 // define the various patterns
 //
 
-static int pattern0[] = {L0, L1, L2, L3, L4, L5, -1 };
-static int pattern1[] = {L0, L1, L2, L3, L4, L5, L4, L3, L2,
-                         L1, -1 };
-static int pattern2[] = {0x0,
-   L0,
-   L0|L1,
-   L0|L1|L2,
-   L0|L1|L2|L3,
-   L0|L1|L2|L3|L4,
-   L0|L1|L2|L3|L4|L5,
-   L1|L2|L3|L4|L5,
-   L2|L3|L4|L5,
-   L3|L4|L5,
-   L4|L5,
-   L5,  -1};
+//static int pattern0[] = {L0, L1, L2, L3, L4, L5, -1 };
+static int pattern0[] = {0x0,L0,L1,L2,L3,L4,L5,L6,L7, -1};
+static int pattern1[] = {0x0,L7,L6,L5,L4,L3,L2,L1,L0, -1};
+static int pattern2[] = {0x0,L0|L1|L2|L3|L4|L5|L6|L7,-1};
+static int pattern3[] = {0x0,L0|L1|L2|L3,-1};
+static int pattern4[] = {0x0,L4|L5|L6|L7,-1};
+static int pattern5[] = {0x0,-1};
 
 
 void set_pattern(int value);
@@ -110,6 +111,9 @@ void select_pattern(int p)
    case 0 : pattern = pattern0; break;
    case 1 : pattern = pattern1; break;
    case 2 : pattern = pattern2; break;
+   case 3 : pattern = pattern3; break;
+   case 4 : pattern = pattern4; break;
+   case 5 : pattern = pattern5; break;
    default: return;
    }
    step = 0;
@@ -147,7 +151,7 @@ void leds_off()
 //
 void quick_led_demo()
 { int p,r,last;
-  for (p=0; p<3; p++)
+  for (p=0; p<6; p++)
   {
     // run pattern several times
     select_pattern(p);
