@@ -6,8 +6,9 @@ Collection of python scripts that use quick2wire python API and admin tools.
 Depedencies
 -----------
 
-quick2wire-python-api
-quick2wire-admin
+https://github.com/quick2wire/quick2wire-python-api
+
+https://github.com/quick2wire/quick2wire-gpio-admin
 
 add the quick2wire libraries to the python path as per the quick2wire doc
 
