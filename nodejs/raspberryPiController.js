@@ -1,8 +1,15 @@
 
 var http = require('http');
 var sys = require('sys');
+var url = require("url");
 var childProcessExec = require('child_process').exec;
 var requests = [];
+var querystring = require("querystring");
+
+var requestHandlers = {}
+requestHandlers["/"] = showForm;
+requestHandlers["/index"] = showForm;
+requestHandlers["/execute"] = executeForm;
 
 const listenAddress = "127.0.0.1";
 const listenPort = 8124;
@@ -23,8 +30,10 @@ function pipeToString(pipe)
     }
 }
 
-function executeSystemCommand(commandString, thisRequestIndex)
+function executeForm(serverRequest, serverResponse, postedData)
 {
+    var incomingString = querystring.parse(postedData).text;
+
     var options = {
         encoding: 'utf8',
         timeout: 0,
@@ -42,14 +51,13 @@ function executeSystemCommand(commandString, thisRequestIndex)
             + 'stderr: ' + pipeToString(stderr)
             + 'error: ' + error;
 
-    	var response = requests[thisRequestIndex].response;
     	// Write the response and close the request
-		response.writeHead(200, { "Content-Type": "text/plain" });
-		response.end("RPi RESPONSE:\n" + responseString);
+		serverResponse.writeHead(200, { "Content-Type": "text/plain" });
+		serverResponse.end("RPi RESPONSE:\n" + responseString);
     }
 
     // Reminder 'child_process.exec' takes 3 arguments: command, [options], callback
-    var child = childProcessExec(commandString, options, systemCommandResponseCallback);
+    var child = childProcessExec(incomingString, options, systemCommandResponseCallback);
 }
 
 setInterval(function() {
@@ -70,20 +78,61 @@ setInterval(function() {
 	}
 }, 1000);
 
+function showForm(serverRequest, serverResponse, postedData)
+{
+    console.log("Showing form...");
+
+    // Generate a simple form tho allow the client to submit a string
+    var body = '<html>'+
+        '<head>'+
+        '<meta http-equiv="Content-Type" content="text/html; '+
+        'charset=UTF-8" />'+
+        '</head>'+
+        '<body>'+
+        '<form action="/execute" method="post">'+
+        '<textarea name="text" rows="20" cols="60"></textarea>'+
+        '<input type="submit" value="Submit text" />'+
+        '</form>'+
+        '</body>'+
+        '</html>';
+
+    serverResponse.writeHead(200, {"Content-Type": "text/html"});
+    serverResponse.write(body);
+    serverResponse.end();
+}
+
+function router(serverRequest, serverResponse, postedData)
+{
+    var pathname = url.parse(serverRequest.url).pathname;
+    console.log("Request for " + pathname + " received..");
+    if (typeof requestHandlers[pathname] === 'function')
+    {
+        requestHandlers[pathname](serverRequest, serverResponse, postedData);
+    }
+    else
+    {
+        console.log("No handler for " + pathname);
+    }
+}
+
 // The request listener is added to the request event
 // Simply record the request for future response, then kick off an asynchonous call to the system
 function requestListener(serverRequest, serverResponse)
 {
-    var nextRequestIndex = requests.length;
+    var postedData = "";
 
-	// store the response so we can respond later
-	requests.push({
-		response: serverResponse,
-		timestamp: new Date().getTime()
-	});
+    serverRequest.setEncoding("utf8");
 
-	console.log('Received request ' + nextRequestIndex + ' @ ' + requests[nextRequestIndex].timestamp);
+    // as we receive data append it to a variable within this closure
+    serverRequest.addListener("data", function(postDataChunk) {
+      postedData += postDataChunk;
+      console.log("Received POST data chunk '"+ postDataChunk + "'.");
+    });
 
-	executeSystemCommand('python -V', nextRequestIndex);
+    // when an end is received all the posted data has been collected, the request is ready to be handled
+    serverRequest.addListener("end", function() {
+      router(serverRequest, serverResponse, postedData);
+    });
 }
+
 
