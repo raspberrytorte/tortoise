@@ -85,8 +85,7 @@ function showForm(serverRequest, serverResponse, postedData)
     // Generate a simple form tho allow the client to submit a string
     var body = '<html>'+
         '<head>'+
-        '<meta http-equiv="Content-Type" content="text/html; '+
-        'charset=UTF-8" />'+
+        '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'+
         '</head>'+
         '<body>'+
         '<form action="/execute" method="post">'+
@@ -99,6 +98,7 @@ function showForm(serverRequest, serverResponse, postedData)
     serverResponse.writeHead(200, {"Content-Type": "text/html"});
     serverResponse.write(body);
     serverResponse.end();
+    console.log("Form shown.");
 }
 
 function router(serverRequest, serverResponse, postedData)
@@ -121,17 +121,19 @@ function requestListener(serverRequest, serverResponse)
 {
     var postedData = "";
 
+    console.log("Connection received..");
+
     serverRequest.setEncoding("utf8");
 
     // as we receive data append it to a variable within this closure
     serverRequest.addListener("data", function(postDataChunk) {
-      postedData += postDataChunk;
-      console.log("Received POST data chunk '"+ postDataChunk + "'.");
+        postedData += postDataChunk;
+        console.log("Received POST data chunk '"+ postDataChunk + "'.");
     });
 
     // when an end is received all the posted data has been collected, the request is ready to be handled
     serverRequest.addListener("end", function() {
-      router(serverRequest, serverResponse, postedData);
+        router(serverRequest, serverResponse, postedData);
     });
 }
 
