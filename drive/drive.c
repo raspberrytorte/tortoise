@@ -131,12 +131,7 @@ int main (int argc, char** argv)
     delay (duration * 1000);
 
     // stop
-    pwmWrite (1, 0) ; // disable PWM
-    digitalWrite (8, 0) ; // set pin low
-    digitalWrite (9, 0) ; // set pin low
-    digitalWrite (7, 0) ; // set pin low
-    digitalWrite (0, 0) ; // set pin low
-    digitalWrite (2, 0) ; // set pin low
+    disable_outputs()
 
   return 0 ;
 
