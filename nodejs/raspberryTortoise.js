@@ -16,9 +16,17 @@ requestHandlers["/right"] = executeRight;
 requestHandlers["/forward"] = executeForward;
 requestHandlers["/backward"] = executeBackward;
 
+var listenAddress = process.argv[2];
+if (undefined == listenAddress)
+{
+    listenAddress = "192.168.0.10";
+}
+var listenPort = process.argv[3];
+if (undefined == listenPort)
+{
+    listenPort = 8080;
+}
 
-const listenAddress = "192.168.0.10";
-const listenPort = 8080;
 http.createServer(requestListener).listen(listenPort, listenAddress);
 console.log('Server running at http://' + listenAddress + ':' + listenPort);
 
