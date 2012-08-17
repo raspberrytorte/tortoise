@@ -6,13 +6,13 @@ node provides the web interface for the control of the raspberryTortoise.
 Installation
 ---------------
 
-   sudo apt-get nodejs
-   cd ~/tortoise/nodejs 
-   nano raspberryTortoise.js
+    sudo apt-get nodejs
+    cd ~/tortoise/nodejs 
+    nano raspberryTortoise.js
 
 search and replace IP addresses to match your server IP address
 
-   sudo nohup node raspberryTortoise.js
+    sudo nohup node raspberryTortoise.js
 
 note this sudo privs are required for the tortoise drive system. 
 
