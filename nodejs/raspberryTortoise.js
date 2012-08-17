@@ -112,7 +112,7 @@ function showForm(serverRequest, serverResponse, postedData)
                '<a href="./left?2"> Left</a>' +
                '<a href="./right?2"> Right</a>' + 
                '<a href="./forward?2"> Forward</a>' + 
-               '<a href="./backward"> Backward</a>' + 
+               '<a href="./backward?2"> Backward</a>' + 
                '  </p>  <img src="http://192.168.0.10:8081/"/> ' +
                '<!-- Hard coded IP address needs changing --></body></html>';
 
