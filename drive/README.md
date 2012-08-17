@@ -23,7 +23,7 @@ drive.c
 
 compile using 
 
-   gcc drive.c -I/usr/local/include -L/usr/local/lib -lwiringPi -o drive
+    gcc drive.c -I/usr/local/include -L/usr/local/lib -lwiringPi -o drive
 
 Usage:
 
@@ -47,17 +47,18 @@ Usage:
     sudo ./ledEnable gpioPin state
 
 where the Led to GPIO Pin mapping is
-   Bufferboard J2 Pin |  GPIO   | WiringPi ID | BigTrak Motor Drive 
-   01 | NA | NA | 
-   02 | NA | NA | 
-   03 | 00 | 08 | 
-   04 | 01 | 09 | 
-   05 | 04 | 07 | 
-   06 | 17 | 00 | 
-   07 | 18 | 01 | 
-   08 | 21 | 02 | 
-   09 | 22 | 03 | 
-   10 | 23 | 04 |
+
+    Bufferboard J2 Pin |  GPIO   | WiringPi ID | BigTrak Motor Drive 
+    01 | NA | NA | 
+    02 | NA | NA | 
+    03 | 00 | 08 | 
+    04 | 01 | 09 | 
+    05 | 04 | 07 | 
+    06 | 17 | 00 | 
+    07 | 18 | 01 | 
+    08 | 21 | 02 | 
+    09 | 22 | 03 | 
+    10 | 23 | 04 |
 
 'state' is 1 for 'on', 0 for 'off'.
 
