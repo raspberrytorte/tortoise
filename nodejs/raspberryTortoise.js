@@ -109,7 +109,11 @@ function showForm(serverRequest, serverResponse, postedData)
                ' <p>Part of the <a href="http://raspberrytorte.com/index.php?title=RaspberryTo$ <p>' +
                'Input the Control Command:    ' +
                '<input type=text id="num" name="num" size="5" maxlength="20"/> ' +
-               '<a href="./execute">Send</a>  </p>  <img src="http://192.168.0.10:8081/"/> ' +
+               '<a href="./left?2"> Left</a>' +
+               '<a href="./right?2"> Right</a>' + 
+               '<a href="./forward?2"> Forward</a>' + 
+               '<a href="./backward"> Backward</a>' + 
+               '  </p>  <img src="http://192.168.0.10:8081/"/> ' +
                '<!-- Hard coded IP address needs changing --></body></html>';
 
     serverResponse.writeHead(200, {"Content-Type": "text/html"});
