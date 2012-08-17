@@ -1,0 +1,20 @@
+#!/bin/bash
+
+echo "test ledEnable for bufferboard LEDs..."
+./ledEnable 8 1
+./ledEnable 9 1
+./ledEnable 7 1
+./ledEnable 0 1
+./ledEnable 1 1
+./ledEnable 2 1
+./ledEnable 3 1
+./ledEnable 4 1
+
+./ledEnable 8 0
+./ledEnable 9 0
+./ledEnable 7 0
+./ledEnable 0 0
+./ledEnable 1 0
+./ledEnable 2 0
+./ledEnable 3 0
+./ledEnable 4 0
