@@ -121,7 +121,7 @@ function showForm(serverRequest, serverResponse, postedData)
                '<a href="./right?2"> Right</a>' + 
                '<a href="./forward?2"> Forward</a>' + 
                '<a href="./backward?2"> Backward</a>' + 
-               '  </p>  <img src="http://192.168.0.10:8081/"/> ' +
+               '  </p>  <img src="http://' + listenAddress + ':8081/"/> ' +
                '<!-- Hard coded IP address needs changing --></body></html>';
 
     serverResponse.writeHead(200, {"Content-Type": "text/html"});
