@@ -16,6 +16,9 @@ requestHandlers["/right"] = executeRight;
 requestHandlers["/forward"] = executeForward;
 requestHandlers["/backward"] = executeBackward;
 
+// i think this is assuming launching using
+// node raspberryTortoise.js, rather than
+// ./raspberryTortoise.js
 var listenAddress = process.argv[2];
 if (undefined == listenAddress)
 {
@@ -26,6 +29,14 @@ if (undefined == listenPort)
 {
     listenPort = 8080;
 }
+
+// Path to the location of the main drive
+var drivePath = process.argv[4];
+if (undefined == drivePath)
+{
+    drivePath = "../drive/";
+}
+
 
 http.createServer(requestListener).listen(listenPort, listenAddress);
 console.log('Server running at http://' + listenAddress + ':' + listenPort);
@@ -108,21 +119,24 @@ function showForm(serverRequest, serverResponse, postedData)
     console.log("Showing form...");
 
     // Generate a simple form tho allow the client to submit a string
-    var body = ' <html><head><title>Raspberry Tortoise Controller</title>' +
-               '</head><body><div id="main"><h1>Raspberry Tortoise</h1>' +
-               '<p>This is the test page for the RaspberryTortoise controller.</p>' +
-               '<p>The video is only supported by FireFox and Chrome.</p>  ' +
-               '<h2>LEDs controls</h2>  <p>' +
-               'The stream below is an mjpeg stream @5fps from the Raspberry Pi.</p>' +
-               ' <p>Part of the <a href="http://raspberrytorte.com/index.php?title=RaspberryTo$ <p>' +
-               'Input the Control Command:    ' +
-               '<input type=text id="num" name="num" size="5" maxlength="20"/> ' +
-               '<a href="./left?2"> Left</a>' +
-               '<a href="./right?2"> Right</a>' + 
-               '<a href="./forward?2"> Forward</a>' + 
-               '<a href="./backward?2"> Backward</a>' + 
-               '  </p>  <img src="http://' + listenAddress + ':8081/"/> ' +
-               '<!-- Hard coded IP address needs changing --></body></html>';
+    var body = '<html><head><title>Raspberry Tortoise Controller</title>' +
+               '<meta name="viewport" content="width=340"> ' +
+               '</head><body><div id="main"> ' +
+               '<font face="Verdana"> ' +
+               '<h1>Raspberry Tortoise</h1>' +
+               '<p> The stream below is mjpeg @2fps from the ' +
+               '<a href="http://raspberrytorte.com/index.php?title=RaspberryTortoise"> ' + 
+               ' RaspberryTortoise </a> </p>' +
+               '<p> Use the link below to control the Tortoise </p> ' +
+               ' <p> ' +
+               '   <a href="./left?2"> |Left</a>' +
+               '   <a href="./right?2"> |Right</a>' + 
+               '   <a href="./forward?2"> |Forward</a>' + 
+               '   <a href="./backward?2"> |Backward|</a>' + 
+               ' </p>  <img src="http://' + listenAddress + ':8081/"/> ' +
+               '<p>Don`t see the video? Use Firefox or Chrome browsers.</p>  ' +
+               '</font>' +
+               '</body></html>';
 
     serverResponse.writeHead(200, {"Content-Type": "text/html"});
     serverResponse.write(body);
@@ -167,7 +181,7 @@ function requestListener(serverRequest, serverResponse)
 function executeLeft(serverRequest, serverResponse, postedData)
 {
     var num = url.parse(serverRequest.url).query ;
-    var incomingString = "./../drive/drive --left "  +  num + " &";
+    var incomingString = drivePath + "./drive --left " + num + " &";
     console.log("command found " + incomingString);
     var options = {
         encoding: 'utf8',
@@ -195,7 +209,7 @@ function executeLeft(serverRequest, serverResponse, postedData)
 function executeRight(serverRequest, serverResponse, postedData)
 {
     var num = url.parse(serverRequest.url).query ;
-    var incomingString = "./../drive/drive --right "  +  num + " &";
+    var incomingString = drivePath + "./drive --right " +  num + " &";
     console.log("command found " + incomingString);
     var options = {
         encoding: 'utf8',
@@ -224,7 +238,7 @@ function executeRight(serverRequest, serverResponse, postedData)
 function executeForward(serverRequest, serverResponse, postedData)
 {
     var num = url.parse(serverRequest.url).query ;
-    var incomingString = "./../drive/drive --forward "  +  num + " &";
+    var incomingString = drivePath + "./drive --forward " +  num + " &";
     console.log("command found " + incomingString);
     var options = {
         encoding: 'utf8',
@@ -252,7 +266,7 @@ function executeForward(serverRequest, serverResponse, postedData)
 function executeBackward(serverRequest, serverResponse, postedData)
 {
     var num = url.parse(serverRequest.url).query ;
-    var incomingString = "./../drive/drive --backward "  +  num + " &";
+    var incomingString = drivePath + "./drive --backward " +  num + " &";
     console.log("command found " + incomingString);
     var options = {
         encoding: 'utf8',
