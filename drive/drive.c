@@ -43,10 +43,28 @@ void disable_outputs() {
     digitalWrite (2, 0) ; // set pin low
 }
 
+void drivePwm(int startPwm, int endPwm, float duration) {
+    int prf = 0;
+    // this generates a ramping PRF
+    // assuming 0 PRF to start and stopping at ~80% say
+    for (prf = startPwm ; prf <= endPwm ; ++prf)
+    {
+//    printf("prf %d(s)\n", prf);
+     pwmWrite (1, (1024/128) * prf) ; // set prf 0 - 1023
+     delay (duration *1000) ; // set duration ms
+     //by controlling the delay its possible to change the acceleration
+    }
+
+    // run for a further n seconds at final prf
+    //pwmWrite (1, endPwm * (1024/128) ) ;
+    //delay (duration * 1000);
+}
+
+
 int main (int argc, char** argv)
 {
   char direction ;
-  int duration= 0;
+  float duration= 0;
   int prf ;
   int opt= 0;
 
@@ -64,10 +82,10 @@ int main (int argc, char** argv)
 // Bufferboard J2 Pin |  GPIO   | WiringPi ID | BigTrak Motor Drive 
 // 01 | NA | NA | +3V3
 // 02 | NA | NA | 0V
-// 03 | 00 | 08 | Left+
-// 04 | 01 | 09 | Left-
-// 05 | 04 | 07 | Right+
-// 06 | 17 | 00 | Right-
+// 03 | 00 | 08 | Left-
+// 04 | 01 | 09 | Left+
+// 05 | 04 | 07 | Right-
+// 06 | 17 | 00 | Right+
 // 07 | 18 | 01 | PWMout
 // 08 | 21 | 02 | EncoderEn
 // 09 | 22 | 03 | NC
@@ -89,49 +107,41 @@ int main (int argc, char** argv)
                    long_options, &long_index )) != -1) {
         switch (opt) {
              case 'l' :
-                 duration = atoi(optarg);
-                 printf("left %d(s)\n", duration);
+                 duration = atof(optarg);
+                 printf("left %f(s)\n", duration);
                  digitalWrite (8, 1) ; // set pin high
                  digitalWrite (0, 1) ; // set pin high
+                 // no load pwm minimum is 40%
+                 drivePwm(40, 40, duration);
                  break;
              case 'r' :
-                 duration = atoi(optarg);
-                 printf("right %d(s)\n", duration);
+                 duration = atof(optarg);
+                 printf("right %f(s)\n", duration);
                  digitalWrite (7, 1) ; // set pin high
                  digitalWrite (9, 1) ; // set pin high
+                 drivePwm(40, 40, duration);
                  break;
              case 'f' :
-                 duration = atoi(optarg);
-                 printf("forward %d(s)\n", duration);
-                 digitalWrite (8, 1) ; // set pin high
-                 digitalWrite (7, 1) ; // set pin high
-                 break;
-             case 'b' :
-                 duration = atoi(optarg);
-                 printf("backward %d(s)\n", duration);
+                 duration = atof(optarg);
+                 printf("forward %f(s)\n", duration);
                  digitalWrite (0, 1) ; // set pin high
                  digitalWrite (9, 1) ; // set pin high
+                 drivePwm(20, 50, duration);
+                 break;
+             case 'b' :
+                 duration = atof(optarg);
+                 printf("backward %f(s)\n", duration);
+                 digitalWrite (8, 1) ; // set pin high
+                 digitalWrite (7, 1) ; // set pin high
+                 drivePwm(20, 50, duration);
                  break;
              default: print_usage();
                  exit(EXIT_FAILURE);
         }
     }
 
-    // this generates a ramping PRF 
-    // assuming 0 PRF to start and stopping at ~80% say
-    for (prf = 1 ; prf < 100 ; ++prf)
-    {
-      pwmWrite (1, (1024/128) * prf) ; // set prf 0 - 1023
-      delay (20) ; // set duration ms
-      // by controlling the delay its possible to change the acceleration
-    }
-
-    // run for a further n seconds at final prf
-    pwmWrite (1, (1024/128) * 100) ;
-    delay (duration * 1000);
-
     // stop
-    disable_outputs()
+    disable_outputs();
 
   return 0 ;
 

@@ -1,11 +1,13 @@
 #!/bin/bash
 
 echo "drive.c test script..."
-./drive -l 2
-./drive -r 2
-./drive -f 2
-./drive -b 2
-./drive --left 2
-./drive --right 2
-./drive --forward 2
-./drive --backward 2
+./drive -f 0.05
+./drive -b 0.05
+./drive -l 0.5
+./drive -r 0.5
+./drive -f 0.05
+./drive -b 0.05
+./drive --left 0.6
+./drive --right 0.6
+./drive --forward 0.05
+./drive --backward 0.05
