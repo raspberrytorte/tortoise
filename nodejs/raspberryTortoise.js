@@ -129,10 +129,10 @@ function showForm(serverRequest, serverResponse, postedData)
                ' RaspberryTortoise </a> </p>' +
                '<p> Use the link below to control the Tortoise </p> ' +
                ' <p> ' +
-               '   <a href="./left?2"> |Left</a>' +
-               '   <a href="./right?2"> |Right</a>' + 
-               '   <a href="./forward?2"> |Forward</a>' + 
-               '   <a href="./backward?2"> |Backward|</a>' + 
+               '   <a href="./left?0.5"> |Left</a>' +
+               '   <a href="./right?0.5"> |Right</a>' + 
+               '   <a href="./forward?0.05"> |Forward</a>' + 
+               '   <a href="./backward?0.05"> |Backward|</a>' + 
                ' </p>  <img src="http://' + listenAddress + ':8081/"/> ' +
                '<p>Don`t see the video? Use Firefox or Chrome browsers.</p>  ' +
                '</font>' +
