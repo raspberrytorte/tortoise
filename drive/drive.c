@@ -131,7 +131,7 @@ int main (int argc, char** argv)
     delay (duration * 1000);
 
     // stop
-    disable_outputs()
+    disable_outputs();
 
   return 0 ;
 
