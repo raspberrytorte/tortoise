@@ -19,7 +19,7 @@ if [ x$1 = "xclean" ]; then
 else
   echo tortoise Build script - please wait...
   cd externals
-  unzip wiringpi.zip -d ./wiringPi
+  unzip wiringPi.zip -d ./wiringPi
   echo building wiringpi
   cd wiringPi/wiringPi
   make 
@@ -29,12 +29,12 @@ else
   sudo make install
   cd ../examples
   make
-  cd ../../
+  cd ../../../
 
   echo build tortoise drive code
   cd drive
   make
-  cd ..
+  cd ../
 fi
 
 echo
