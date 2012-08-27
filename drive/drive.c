@@ -63,9 +63,9 @@ void drivePwm(int startPwm, int endPwm, float duration) {
 
 int main (int argc, char** argv)
 {
-  char direction ;
+//  char direction ;
   float duration= 0;
-  int prf ;
+//  int prf ;
   int opt= 0;
 
     //Specifying the expected options

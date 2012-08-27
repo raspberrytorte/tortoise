@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo Refresh externals
+echo
+rm -rf wiringPi
+git clone git://git.drogon.net/wiringPi
+cd wiringPi
+git archive --format zip --output wiringPi.zip master
+cd ..
+rm -rf wiringPi
+
