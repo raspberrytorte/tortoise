@@ -7,23 +7,13 @@ Its written in 'C' and is dependent on 'WiringPi' library.
 Installation
 ------------
 
-    git clone https://github.com/WiringPi/WiringPi.git
+Make sure you've got wiringPi installed.
 
-    cd wiringPi/wiringPi
-    make
-    sudo make install
-    cd ../gpio
-    make
-    sudo make install
-    cd ../examples
+    cd drive/
     make
 
 drive.c
 -------
-
-compile using 
-
-    gcc drive.c -I/usr/local/include -L/usr/local/lib -lwiringPi -o drive
 
 Usage:
 
@@ -37,10 +27,6 @@ ledEnable.c
 ----------------
 
 'ledEnable' is a programme that enables leds on the RaspberryTortoise buffer board.
-
-compile using
-
-    gcc ledEnable.c -I/usr/local/include -L/usr/local/lib -lwiringPi -o ledEnable
 
 Usage:
 
@@ -71,4 +57,28 @@ to switch it off again
 
     sudo ./ledEnable 1 0
 
+softDrive.c
+-----------
+
+Software emulated PWM provided by wiringPi. Should provide the same functionality as drive.c but without the required logic.
+
+usage:
+
+    softDrive -[lrfb] pwm% duration(s)
+
+example
+
+    sudo ./softdrive --left 40 2.1
+
+
+softPwmTest.c
+-------------
+
+This is test programme to evaluate the software PWM library in wiringPi.
+
+Usage: 
+
+    sudo ./softPwmTest
+
+when used with the Tortoise LEDs board this programme will light up the 8 test LEDs with a variety of PWMs.
 
