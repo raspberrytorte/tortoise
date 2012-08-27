@@ -1,8 +1,8 @@
 /*
  * softPwmTest.c:
  *      Program to test WiringPi softPwm
- *      compile using the -lpthread
- *      gcc softPwmTest.c -I/usr/local/include -L/usr/local/lib -lwiringPi -lpt$
+ *      compiler using the -lpthread
+ *
  *      defaults use the led layout in the tortoise buffer board.
  *      edit as required
  *
@@ -56,6 +56,7 @@ int main ()
 
   printf ("Wait a few seconds or Ctrl-C to quit\n");
 
+  // delay for 5 seconds then exit
   for (i = 0 ; i < 5; ++i)
   {
     delay(i*1000) ;
