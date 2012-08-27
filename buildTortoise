@@ -31,7 +31,7 @@ else
   make
   cd ../../
 
-  echo build tortoise code, needs a makefile
+  echo build tortoise drive code
   cd drive
   make
   cd ..
