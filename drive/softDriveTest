@@ -1,0 +1,24 @@
+#!/bin/bash
+echo "softDrive.c test script..."
+
+make softDrive
+##  {START..END..INCREMENT}
+./softDrive --help
+for i in {20..100..20}
+do
+   ./softDrive -l $i -d 0.5
+   ./softDrive -r $i -d 0.5
+   ./softDrive -f $i -d 0.5
+   ./softDrive -b $i -d 0.5
+   sleep 1
+done
+
+for i in {100..20..-20}
+do
+   ./softDrive --left $i -d 0.5
+   ./softDrive --right $i -d 0.5
+   ./softDrive --forward $i -d 0.5
+   ./softDrive --backward $i -d 0.5
+   sleep 1
+done
+
