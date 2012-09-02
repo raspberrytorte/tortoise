@@ -99,10 +99,10 @@ PI_THREAD (waitForRightEncoder)
                                                       
 
 void print_usage() {
-    printf("Usage: drive -lrfb time(s) \n");
-    printf("drive --[left right forward backward] time(s) \n");
+    printf("Usage: drive -lrfb PWM 0-100 -d encoder pulses \n");
+    printf("drive --[left right forward backward] PWM 0-100 --duration Encoder Pulses \n");
     printf("Example: \n");
-    printf(" ./drive --left 10\n");
+    printf(" ./softDriveEncoder --left 50 --duration 200\n");
 }
 
 void configure_outputs() {  
@@ -158,15 +158,24 @@ void disable_outputs() {
 
 void drivePwm(int * ledMap, int Pwm, float duration) {
     int i ;
-
+    int myLeftCounter = 0;
+    // Read the Encoder counts.
+    
+    //piLock(COUNT_RIGHT);
+    //myRightCounter = globalCounterRight;
+    //piUnlock(COUNT_RIGHT);
     // set the pwms running
     for (i = 0 ; i < NUM_LEDS ; ++i)
     {
-      printf("Map = %d \n", ledMap[i]);
       softPwmWrite (ledMap [i], Pwm) ;
     }
-    delay (duration *1000) ;
-
+    // Wait until the number of encoder counts has been reached
+    // Currently only checking the left hand encoder.
+    while (myLeftCounter < duration) {
+      piLock(COUNT_LEFT);
+      myLeftCounter = globalCounterLeft;
+      piUnlock(COUNT_LEFT);
+    }
 }
 
 
@@ -198,14 +207,8 @@ int main (int argc, char** argv)
 
     int long_index =0;
     
-    // Read the Encoder counts.
-    piLock(COUNT_LEFT);
-    myLeftCounter = globalCounterLeft;
-    piUnlock(COUNT_LEFT);
-    piLock(COUNT_RIGHT);
-    myRightCounter = globalCounterRight;
-    piUnlock(COUNT_RIGHT);
-    printf("Start Encoder Positions = %d, %d \n", myLeftCounter, myRightCounter);
+    
+    //printf("Start Encoder Positions = %d, %d \n", myLeftCounter, myRightCounter);
     
     while ((opt = getopt_long(argc, argv,"l:r:f:b:d:",
                    long_options, &long_index )) != -1) {

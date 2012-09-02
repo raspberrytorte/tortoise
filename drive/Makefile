@@ -15,11 +15,11 @@ LIBS    = -lwiringPi
 # Should not alter anything below this line
 ###############################################################################
 
-SRC	=	drive.c ledEnable.c softPwmTest.c softDrive.c
+SRC	=	drive.c ledEnable.c softPwmTest.c softDrive.c readEncoders.c softDriveEncoder.c
 
-OBJ	=	drive.o ledEnable.o softPwmTest.o softDrive.o
+OBJ	=	drive.o ledEnable.o softPwmTest.o softDrive.o readEncoders.o softDriveEncoder.o
 
-all:		drive ledEnable softPwmTest softDrive
+all:		drive ledEnable softPwmTest softDrive readEncoders softDriveEncoder
 
 drive:	drive.o
 	@echo [link]
@@ -36,13 +36,21 @@ softPwmTest:	softPwmTest.o
 softDrive:	softDrive.o
 	@echo [link]
 	$(CC) -o $@ softDrive.o $(LDFLAGS) $(LIBS) -lpthread
+	
+readEncoders:   readEncoders.o
+	@echo [link]
+	$(CC) -o $@ readEncoders.o $(LDFLAGS) $(LIBS) -lpthread
+
+softDriveEncoder:   softDriveEncoder.o
+	@echo [link]
+	$(CC) -o $@ softDriveEncoder.o $(LDFLAGS) $(LIBS) -lpthread
 
 .c.o:
 	@echo [CC] $<
 	@$(CC) -c $(CFLAGS) $< -o $@
 
 clean:
-	rm -f $(OBJ) *~ core tags drive ledEnable softPwmTest softDrive
+	rm -f $(OBJ) *~ core tags drive ledEnable softPwmTest softDrive readEncoders softDriveEncoder
 
 tags:	$(SRC)
 	@echo [ctags]
